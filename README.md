@@ -29,4 +29,6 @@ export client_id="" a different uuid
 sbt it:test
 ```
 
+Values are stored in Lastpass under Shared-Engineering folder as "secret-store-provider-azure-key-vault"
+
 
