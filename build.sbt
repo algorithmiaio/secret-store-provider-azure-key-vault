@@ -8,9 +8,9 @@ description := "Algorithmia Azure Key Vault secret store module"
 
 val algorithmiaS3Maven = "s3://s3-us-west-2.amazonaws.com/algorithmia-maven/repo"
 
-libraryDependencies += "com.algorithmia" % "plugin-sdk" % "4b49076258af71767f502f1849839b60879ef8f5"
+libraryDependencies += "com.algorithmia" % "plugin-sdk" % "6bd708784bbadb0922e612fa45e7a4fb89f716ba"
 libraryDependencies += "com.azure" % "azure-security-keyvault-secrets" % "4.2.8";
-libraryDependencies += "com.azure" % "azure-identity" % "1.3.0";
+libraryDependencies += "com.azure" % "azure-identity" % "1.3.1";
 
 
 resolvers += "Algorithmia Maven" at algorithmiaS3Maven
@@ -36,3 +36,9 @@ autoScalaLibrary := false
 
 // version artifacts using Git
 enablePlugins(GitVersioning)
+
+assemblyMergeStrategy in assembly := {
+  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+  case x => MergeStrategy.first
+}
+
