@@ -1,20 +1,60 @@
 # secret-store-provider-azure-key-vault
-Secret Store Provider for Azure Key Vault
 
+Algorithmia Secret Store Provider for Azure Key Vault
 
-## Integration tests
+This module is the example of an Azure Key Vault based secret provider implementation used by the
+Algorithmia platform.
 
+THIS PLUGIN IN UNSUPPORTED BY ALGORITHMIA AND INTENDED AS AN EXAMPLE ONLY
+
+## Getting started
+
+This secret provider modules can be added using the admin functionality for managing secret providers.
+
+[Algorithmia Developers - Algorithm Secrets](https://algorithmia.com/developers/platform/algorithm-secrets)
+
+## Requirements
+
+To build this plugin the following must be installed:
+* sbt 1.3.13 or later
+* java 1.8 or later
+
+As an example, see: Dockerfile.build
+
+This can be executed as:
+`docker build . -f Dockerfile.build -t plugin-dev && docker run -it --rm plugin-dev`
+
+## Building
+
+`sbt assembly`
+
+This will produce a JAR file at:
+target/secret-store-provider-azure-key-vault-assembly-<GIT_SHA>.jar
+
+This can be uploaded to the Algorithmia Admin console as a secret provider.
+
+## Configuration
+
+This plugin requires the follow configuration settings:
+* vault_url - URL of the Azure Vault to use
+* client_id - Azure Client ID (UUID)
+* client_secret - Azure token to authenticate to Azure
+* tenant_id - Azure Tenant ID (UUID)
+
+## Azure Setup
 
 In Azure Portal - Under Active Directory:
 
 * App Registrations
   * New Registration
   * New client secret (note client secret)
-  * Note tenant_id and client_id and client secret
+  * Note tenant_id and client_id
 
 * Create Key Vault
 * Note vault url
 * Access Controls - add app created above with Key and Secret permissions
+
+## Integration tests
 
 The integration tests expect the configurable parameters to be in the environment
 at run time.
@@ -28,7 +68,4 @@ export client_id="" a different uuid
 
 sbt it:test
 ```
-
-Values are stored in Lastpass under Shared-Engineering folder as "secret-store-provider-azure-key-vault"
-
 
