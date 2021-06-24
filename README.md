@@ -15,7 +15,7 @@ To build this plugin the following must be installed:
 * sbt 1.3.13 or later
 * Java 1.8 or later
 
-As an example, see: `Dockerfile.build`, which can be executed as:
+As an example, see `Dockerfile.build`, which can be executed with:
 
 `docker build . -f Dockerfile.build -t plugin-dev && docker run -it --rm plugin-dev`
 
@@ -29,12 +29,11 @@ This will produce a JAR file at:
 
 This JAR file can then be [uploaded to Algorithmia as a secret provider module](https://training.algorithmia.com/exploring-the-admin-panel/842511) in the admin UI.
 
-Rather than building, files from the releases may be used:
-[Releases](https://github.com/algorithmiaio/secret-store-provider-azure-key-vault/releases)
+Rather than building, files from the [Releases](https://github.com/algorithmiaio/secret-store-provider-azure-key-vault/releases) may also be used.
 
 ## Configuration
 
-This plugin requires the follow configuration settings (see [Azure setup](#azure-setup), below):
+This plugin requires the following configuration settings (see [Azure setup](#azure-setup), below):
 * `vault_url` - Azure Key Vault URL
 * `client_id` - Azure Client ID (UUID)
 * `client_secret` - Azure token to authenticate to Azure
@@ -62,10 +61,12 @@ In the Azure Portal:
   * Under **Access policy** click **+ Add Access Policy** and add the app registered above, with **Key Permissions** and **Secret Permissions** selected
   * Configure the vault as desired, and note the vault URL (`vault_url`) once created (this'll likely be called **DNS Name** on the vault details page)
 
-## Integration tests
+## Testing
+
+### Integration testing
 
 The integration tests expect the configurable parameters to be available in the environment
-at run time. To set the variables and run the tests, substitue your values with the PLACEHOLDER_VALUES in the following:
+at run time. To set the variables and run the tests, substitue your values with the PLACEHOLDER_VALUES and run the following:
 
 ```
 export vault_url="https://YOUR_VAULT_NAME.vault.azure.net/"
@@ -76,3 +77,8 @@ export client_id="CLIENT_ID"  # a different uuid
 
 sbt it:test
 ```
+
+## How to contribute
+
+If you have proposed changes, feel free to open PRs. However, only submit PRs with
+code that can be freely released under the MIT License of this package.
