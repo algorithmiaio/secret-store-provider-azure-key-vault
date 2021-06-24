@@ -1,74 +1,78 @@
 # secret-store-provider-azure-key-vault
 
-Algorithmia Secret Store Provider for Azure Key Vault
-
-This module is the example of an Azure Key Vault based secret provider implementation used by the
+This module is the example of an Azure Key Vault-based secret provider implementation used by the
 Algorithmia platform.
 
 This plugin is unsupported by Algorithmia and intended as an example only.
 
 ## Getting started
 
-This secret provider modules can be added using the admin functionality for managing secret providers.
-
-[Algorithmia Developers - Algorithm Secrets](https://algorithmia.com/developers/platform/algorithm-secrets)
+This secret provider module can be added using Algorithmia's [admin functionality for managing secret providers](https://training.algorithmia.com/exploring-the-admin-panel/842511).
 
 ## Requirements
 
 To build this plugin the following must be installed:
 * sbt 1.3.13 or later
-* java 1.8 or later
+* Java 1.8 or later
 
-As an example, see: Dockerfile.build
+As an example, see: `Dockerfile.build`, which can be executed as:
 
-This can be executed as:
 `docker build . -f Dockerfile.build -t plugin-dev && docker run -it --rm plugin-dev`
 
 ## Building
 
+To build, run:
 `sbt assembly`
 
 This will produce a JAR file at:
-target/secret-store-provider-azure-key-vault-assembly-<GIT_SHA>.jar
+`target/secret-store-provider-azure-key-vault-assembly-<GIT_SHA>.jar`
 
-This can be uploaded to the Algorithmia Admin console as a secret provider.
+This JAR file can then be [uploaded to Algorithmia as a secret provider module](https://training.algorithmia.com/exploring-the-admin-panel/842511) in the admin UI.
 
 Rather than building, files from the releases may be used:
 [Releases](https://github.com/algorithmiaio/secret-store-provider-azure-key-vault/releases)
 
 ## Configuration
 
-This plugin requires the follow configuration settings:
-* vault_url - URL of the Azure Vault to use
-* client_id - Azure Client ID (UUID)
-* client_secret - Azure token to authenticate to Azure
-* tenant_id - Azure Tenant ID (UUID)
+This plugin requires the follow configuration settings (see [Azure setup](#azure-setup), below):
+* `vault_url` - Azure Key Vault URL
+* `client_id` - Azure Client ID (UUID)
+* `client_secret` - Azure token to authenticate to Azure
+* `tenant_id` - Azure tenant ID (UUID)
 
-## Azure Setup
+## Azure setup
 
-In Azure Portal - Under Active Directory:
+In the Azure Portal:
 
-* App Registrations
-  * New Registration
-  * New client secret (note client secret)
-  * Note tenant_id and client_id
+*Register an app:*
 
-* Create Key Vault
-* Note vault url
-* Access Controls - add app created above with Key and Secret permissions
+* Go to the **Azure Active Directory** service and then **App registrations**
+* Click on **+ New registration**
+  * Provide a **Name** for your app so that it's identifiable
+  * Click **Register** at the bottom
+* In the details page for the newly registered app:
+  * Click **Certificates & secrets** and **+ New client secret**
+    * Click **Add** and note the new client secret's **Value** (`client_secret`), which won't be available once you navigate away from the page
+  * Note the **Application (client) ID** (`client_id`) and **Directory (tenant) ID** (`tenant_id`) values
+
+*Create a key vault:*
+
+* Go to the **Key Vaults** service and click **+ Create**
+* Create a key vault
+  * Under **Access policy** click **+ Add Access Policy** and add the app registered above, with **Key Permissions** and **Secret Permissions** selected
+  * Configure the vault as desired, and note the vault URL (`vault_url`) once created (this'll likely be called **DNS Name** on the vault details page)
 
 ## Integration tests
 
-The integration tests expect the configurable parameters to be in the environment
-at run time.
+The integration tests expect the configurable parameters to be available in the environment
+at run time. To set the variables and run the tests, substitue your values with the PLACEHOLDER_VALUES in the following:
 
 ```
-export vault_url="https://your_vault_name.vault.azure.net/"
-export client_secret="1.something"
+export vault_url="https://YOUR_VAULT_NAME.vault.azure.net/"
+export client_secret="CLIENT_SECRET"
 
-export tenant_id="" looks like a uuid
-export client_id="" a different uuid
+export tenant_id="TENANT_ID"  # looks like a uuid
+export client_id="CLIENT_ID"  # a different uuid
 
 sbt it:test
 ```
-
